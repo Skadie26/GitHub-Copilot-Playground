@@ -1,0 +1,30 @@
+<div class="app-layout">
+  <app-banner
+    [isLoading]="isLoading"
+    [error]="error"
+    [dataCount]="dataCount"
+    [isSaving]="isSaving"
+  >
+  </app-banner>
+
+  <div class="content-layout">
+    <!-- Mobile overlay -->
+    <div
+      class="sidebar-overlay"
+      [class.show]="isMobile && sidebarOpen"
+      (click)="closeSidebar()"
+    ></div>
+
+    <app-sidebar
+      [isOpen]="sidebarOpen"
+      [isMobile]="isMobile"
+      (toggleSidebar)="toggleSidebar()"
+    ></app-sidebar>
+
+    <div class="main-content">
+      <app-weather
+        (weatherDataChange)="onWeatherDataChange($event)"
+      ></app-weather>
+    </div>
+  </div>
+</div>

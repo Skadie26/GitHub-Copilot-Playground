@@ -1,0 +1,15 @@
+%% 4. Data Model (ER)
+erDiagram
+ CITY ||--o{ FORECAST : has
+ CITY {
+ int Id
+ string Name
+ string Country
+ }
+ FORECAST {
+ int Id
+ int CityId
+ date Date
+ decimal TemperatureC
+ string Summary
+ }

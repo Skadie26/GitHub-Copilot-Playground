@@ -1,0 +1,7 @@
+flowchart LR
+	TRIGGER["Trigger - main/develop/feature PR/push"] --> STG_BUILD[Stage: BuildAndTest]
+	STG_BUILD --> JOB_BACKEND["Job: Backend - UseDotNet, Restore, Build, Test"]
+	STG_BUILD --> JOB_FRONTEND["Job: Frontend - Node install, Build"]
+	JOB_BACKEND --> STG_ART["Stage: CreateArtifacts"]
+	JOB_FRONTEND --> STG_ART
+	STG_ART --> JOB_ARTIFACTS["Job: Artifacts - Collect and Publish"]

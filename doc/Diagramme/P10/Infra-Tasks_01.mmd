@@ -1,0 +1,10 @@
+﻿graph LR
+	T["Triggers<br/>main/develop/feature/*"] --> S1[Stage: BuildAndTest]
+	subgraph S1
+		B["Job: BackendBuild<br/>.NET 8 build & tests"]
+		F["Job: FrontendBuild<br/>Node 20 build & tests"]
+	end
+	S1 --> S2["Stage: CreateArtifacts<br/>always()"]
+	B -->|backend-status.txt| S2
+	F -->|frontend-status.txt| S2
+	S2 --> A[Artifact: DONE.txt]

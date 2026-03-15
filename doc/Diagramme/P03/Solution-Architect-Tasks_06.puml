@@ -1,0 +1,124 @@
+@startuml Weather Application Class Diagram
+!theme plain
+skinparam backgroundColor #FFFFFF
+
+package "Frontend Models" {
+    interface SimplifiedWeather {
+        +cityName: string
+        +temperature: number
+        +weatherDescription: string
+        +date: string
+        +windspeed: number
+    }
+    
+    interface BackendWeatherResponse {
+        +cityName: string
+        +temperature: number
+        +weatherDescription: string
+        +windSpeed: number
+        +date: string
+    }
+}
+
+package "Backend Models" {
+    class WeatherDto {
+        +CityName: string
+        +Temperature: decimal
+        +WeatherDescription: string
+        +WindSpeed: decimal
+        +Date: DateTime
+    }
+    
+    class City {
+        +Name: string
+        +Latitude: double
+        +Longitude: double
+    }
+}
+
+package "Services" {
+    interface IOpenWeatherService {
+        +GetWeatherForCitiesAsync(): Task<List<WeatherDto>>
+    }
+    
+    class OpenWeatherService {
+        -_httpClient: HttpClient
+        -_logger: ILogger<OpenWeatherService>
+        +GetWeatherForCitiesAsync(): Task<List<WeatherDto>>
+        -GetWeatherForCityAsync(city: City): Task<WeatherDto>
+    }
+    
+    class WeatherService {
+        -http: HttpClient
+        +getWeather(): Observable<SimplifiedWeather[]>
+        +getWeatherFromDatabase(): Observable<SimplifiedWeather[]>
+        +fetchAndSaveWeatherData(): Observable<any[]>
+        -handleError(): Observable<never>
+    }
+}
+
+package "Data Access" {
+    interface IWeatherRepository {
+        +GetAllWeatherAsync(): Task<IEnumerable<WeatherDto>>
+        +AddWeatherAsync(weather: WeatherDto): Task
+    }
+    
+    class WeatherRepository {
+        -_databaseContext: DatabaseContext
+        +GetAllWeatherAsync(): Task<IEnumerable<WeatherDto>>
+        +AddWeatherAsync(weather: WeatherDto): Task
+    }
+    
+    class DatabaseContext {
+        -_connectionString: string
+        +CreateConnection(): IDbConnection
+        +InitializeDatabaseAsync(): Task
+    }
+}
+
+package "Controllers" {
+    class WeatherController {
+        -_openWeatherService: IOpenWeatherService
+        -_logger: ILogger<WeatherController>
+        -_weatherRepository: IWeatherRepository
+        +GetOpenMereoWeather(): Task<ActionResult<List<WeatherDto>>>
+        +GetWeather(): Task<ActionResult<IEnumerable<WeatherDto>>>
+        +AddWeather(weather: WeatherDto): Task<IActionResult>
+    }
+}
+
+package "Components" {
+    class AppComponent {
+        +title: signal<string>
+        +dataCount: number
+    }
+    
+    class WeatherComponent {
+        -weatherService: WeatherService
+        +weatherData: SimplifiedWeather[]
+        +isLoading: boolean
+        +error: string | null
+        +loadDatabaseData(): void
+        +fetchFreshData(): void
+    }
+}
+
+' Relationships
+OpenWeatherService ..|> IOpenWeatherService
+WeatherRepository ..|> IWeatherRepository
+
+WeatherController --> IOpenWeatherService
+WeatherController --> IWeatherRepository
+WeatherRepository --> DatabaseContext
+
+WeatherComponent --> WeatherService
+WeatherService --> BackendWeatherResponse
+WeatherService --> SimplifiedWeather
+
+WeatherController --> WeatherDto
+OpenWeatherService --> WeatherDto
+OpenWeatherService --> City
+
+AppComponent --> WeatherComponent
+
+@enduml

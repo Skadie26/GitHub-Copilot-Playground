@@ -1,0 +1,16 @@
+@startuml darkmode_flow
+' Darkmode Zustandsfluss
+
+component Toggle as "Darkmode Button"
+component Signal as "Signal: darkMode()"
+component Root as "app-layout (Host)"
+component Grid as "ag-grid-angular"
+component Styles as "Darkmode CSS / Variablen"
+component Table as ".weather-table-container"
+
+Toggle --> Signal : click()
+Signal --> Root : update class
+Root --> Styles : Selektor .darkmode
+Styles --> Grid : Variablen / Farben
+Styles --> Table : Container / Buttons / Rows
+@enduml

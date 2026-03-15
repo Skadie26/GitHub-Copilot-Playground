@@ -1,0 +1,111 @@
+@startuml Weather Data Flow Sequence
+!theme plain
+skinparam backgroundColor #FFFFFF
+
+actor User
+participant "Angular Frontend" as Frontend
+participant "Weather Service" as Service
+participant "Weather Controller" as Controller
+participant "OpenWeather Service" as OpenWeatherSvc
+participant "Weather Repository" as Repository
+participant "Database Context" as DbContext
+participant "SQLite Database" as Database
+participant "OpenMeteo API" as ExternalAPI
+
+== Fresh Weather Data Fetch ==
+
+User -> Frontend : Click "Fetch Fresh Data"
+activate Frontend
+
+Frontend -> Service : fetchAndSaveWeatherData()
+activate Service
+
+Service -> Controller : GET /api/v1/Weather/openmeteo
+activate Controller
+
+Controller -> OpenWeatherSvc : GetWeatherForCitiesAsync()
+activate OpenWeatherSvc
+
+loop For each German city
+    OpenWeatherSvc -> ExternalAPI : HTTP GET weather data
+    activate ExternalAPI
+    ExternalAPI --> OpenWeatherSvc : Weather JSON response
+    deactivate ExternalAPI
+end
+
+OpenWeatherSvc --> Controller : List<WeatherDto>
+deactivate OpenWeatherSvc
+
+Controller --> Service : Weather data array
+deactivate Controller
+
+loop For each weather entry
+    Service -> Controller : POST /api/v1/Weather
+    activate Controller
+    
+    Controller -> Repository : AddWeatherAsync(weather)
+    activate Repository
+    
+    Repository -> DbContext : ExecuteAsync(INSERT)
+    activate DbContext
+    
+    DbContext -> Database : SQL INSERT
+    activate Database
+    Database --> DbContext : Success
+    deactivate Database
+    
+    DbContext --> Repository : Success
+    deactivate DbContext
+    
+    Repository --> Controller : Success
+    deactivate Repository
+    
+    Controller --> Service : 201 Created
+    deactivate Controller
+end
+
+Service --> Frontend : Save operations complete
+deactivate Service
+
+Frontend --> User : Fresh data fetched and saved
+deactivate Frontend
+
+== Display Stored Weather Data ==
+
+User -> Frontend : Click "Load Database Data"
+activate Frontend
+
+Frontend -> Service : getWeatherFromDatabase()
+activate Service
+
+Service -> Controller : GET /api/v1/Weather
+activate Controller
+
+Controller -> Repository : GetAllWeatherAsync()
+activate Repository
+
+Repository -> DbContext : QueryAsync<WeatherDto>()
+activate DbContext
+
+DbContext -> Database : SELECT * FROM Weather
+activate Database
+Database --> DbContext : Weather records
+deactivate Database
+
+DbContext --> Repository : List<WeatherDto>
+deactivate DbContext
+
+Repository --> Controller : Weather data
+deactivate Repository
+
+Controller --> Service : Weather data array
+deactivate Controller
+
+Service --> Frontend : Transformed weather data
+deactivate Service
+
+Frontend -> Frontend : Update AG-Grid with data
+Frontend --> User : Display weather table
+deactivate Frontend
+
+@enduml

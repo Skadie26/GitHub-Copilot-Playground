@@ -1,0 +1,15 @@
+%% 5. Angular Component Interaction
+graph TD
+ CitySelect[CitySelectComponent]
+ Dashboard[DashboardComponent]
+ ForecastTable[ForecastTableComponent]
+ Signals["(Signals Store)"]
+ ApiSvc[WeatherApiService]
+
+ CitySelect -->|"city change()"| Signals
+ Dashboard --> Signals
+ ForecastTable --> Signals
+ Signals --> Dashboard
+ Signals --> ForecastTable
+ Dashboard --> ApiSvc
+ ApiSvc --> Signals

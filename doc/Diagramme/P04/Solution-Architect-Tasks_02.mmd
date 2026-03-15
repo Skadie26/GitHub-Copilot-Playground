@@ -1,0 +1,17 @@
+%% Angular component-level view
+graph LR
+ subgraph UI[Angular App]
+ direction TB
+ Banner[app-banner]
+ Sidebar[app-sidebar]
+ WeatherComp[app-weather]
+ end
+
+ WeatherComp -->|uses| WS[WeatherService]
+ WS -->|GET/POST| API[Backend API]
+ WeatherComp -->|renders| Grid[ag-grid]
+ Banner -->|static| UI
+ Sidebar -->|navigation| UI
+
+ style UI fill:#f0f8ff,stroke:#0366d6
+ style Grid fill:#ffffff,stroke:#999

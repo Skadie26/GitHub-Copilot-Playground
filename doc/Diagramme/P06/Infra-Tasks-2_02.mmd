@@ -1,0 +1,11 @@
+graph TD
+ A[Trigger] --> B[Parallel Jobs]
+ B --> C[Backend]
+ B --> D[Frontend]
+ B --> E[Artifacts]
+ 
+ C --> C1[Build & Test]
+ D --> D1[Build & Test]
+ C1 --> E
+ D1 --> E
+ E --> F[Final Report]

@@ -1,0 +1,89 @@
+%% High-Level Full Stack Architecture (compatible syntax)
+flowchart LR
+ %% Frontend
+ subgraph FE[Angular Frontend / frontend/frontend]
+ UI[Components & Signals]
+ CFG["API Config<br/>src/app/config/app.config.ts"]
+ end
+
+ %% Backend
+ subgraph BE[ASP.NET Core Backend / backend]
+ CTLS[Controllers]
+ SVC[Services - OpenWeatherService]
+ REPO[Repositories - WeatherRepository]
+ DBCTX[DatabaseContext]
+ CORS[CORS Policy: AllowAngular]
+ HTTPF[IHttpClientFactory]
+ end
+
+ %% Database cluster
+ subgraph DB[SQLite Database]
+ SQLITE["(local.db)"]
+ WeatherTable["(Weather Data)"]
+ end
+
+ %% External APIs
+ subgraph EXT[External Weather APIs]
+ OpenMeteo[[Open-Meteo]]
+ OpenWeather[[OpenWeather]]
+ end
+
+ %% Testing
+ subgraph TESTS[Testing]
+ PW[Playwright E2E]
+ NUnit[Backend Unit Tests]
+ Karma[Frontend Unit Tests]
+ end
+
+ %% Dev Tooling
+ subgraph DEV[Dev Tooling]
+ SA[start-app.ps1]
+ SB[start-backend.ps1]
+ SF[start-frontend.ps1]
+ end
+
+ %% CI / Infra
+ subgraph CI[CI / Infra]
+ AZP[Azure Pipelines YAML]
+ TF[Terraform / Docker]
+ end
+
+ %% Frontend -> Backend
+ UI -->|HTTP| CTLS
+ UI --> CFG
+
+ %% Backend layering
+ CTLS --> SVC
+ SVC --> REPO
+ REPO --> DBCTX
+ DBCTX --> SQLITE
+ SQLITE --> WeatherTable
+ SVC --> HTTPF
+ HTTPF -->|Outbound REST| EXT
+
+ %% CORS (dotted association)
+ CORS -. enables .-> UI
+
+ %% Tests
+ PW --> UI
+ PW --> CTLS
+ NUnit --> CTLS
+ NUnit --> REPO
+ Karma --> UI
+
+ %% Dev scripts
+ SA --> SB
+ SA --> SF
+ SB --> CTLS
+ SF --> UI
+
+ %% CI / Infra flows
+ AZP -->|Build & Test| TESTS
+ AZP -->|Publish Artifacts| TF
+ TF -->|Provision| BE
+ TF -->|Provision| FE
+ TF --> SQLITE
+
+ %% External APIs usage
+ SVC --> OpenMeteo
+ SVC --> OpenWeather

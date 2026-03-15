@@ -1,0 +1,88 @@
+graph TB
+ subgraph "Development Environment"
+ DevMachine[Developer Machine]
+ LocalDocker[Local Docker]
+ VSCode[VS Code + Copilot]
+ end
+ 
+ subgraph "Source Control"
+ GitHub[GitHub Repository]
+ Branches[Feature Branches]
+ PRs[Pull Requests]
+ end
+ 
+ subgraph "CI/CD Pipeline - Azure DevOps"
+ Trigger[Pipeline Trigger]
+ Build[Build Stage]
+ Test[Test Stage]
+ Package[Package Stage]
+ Deploy[Deploy Stage]
+ 
+ subgraph "Build Artifacts"
+ FrontendBuild[Angular Build]
+ BackendBuild[.NET Build]
+ DockerImages[Docker Images]
+ end
+ end
+ 
+ subgraph "Azure Cloud Infrastructure"
+ subgraph "Container Registry"
+ ACR[Azure Container Registry]
+ end
+ 
+ subgraph "Compute"
+ AppService[Azure App Service]
+ ContainerInstance[Container Instances]
+ end
+ 
+ subgraph "Database"
+ SQLDatabase[Azure SQL Database]
+ Storage[Azure Storage]
+ end
+ 
+ subgraph "Networking"
+ LoadBalancer[Load Balancer]
+ CDN[Azure CDN]
+ AppGateway[Application Gateway]
+ end
+ 
+ subgraph "Monitoring"
+ AppInsights[Application Insights]
+ LogAnalytics[Log Analytics]
+ Alerts[Azure Alerts]
+ end
+ end
+ 
+ subgraph "Infrastructure as Code"
+ Bicep[Bicep Templates]
+ Terraform[Terraform Scripts]
+ ARM[ARM Templates]
+ end
+ 
+ DevMachine --> GitHub
+ GitHub --> Trigger
+ Trigger --> Build
+ Build --> Test
+ Test --> Package
+ Package --> FrontendBuild
+ Package --> BackendBuild
+ Package --> DockerImages
+ 
+ DockerImages --> ACR
+ Deploy --> AppService
+ Deploy --> ContainerInstance
+ 
+ AppService --> SQLDatabase
+ ContainerInstance --> Storage
+ 
+ LoadBalancer --> AppService
+ CDN --> FrontendBuild
+ AppGateway --> LoadBalancer
+ 
+ AppService --> AppInsights
+ ContainerInstance --> LogAnalytics
+ LogAnalytics --> Alerts
+ 
+ Bicep --> AppService
+ Terraform --> SQLDatabase
+ ARM --> ContainerInstance

@@ -1,0 +1,31 @@
+{
+  "type": "Microsoft.Compute/galleries",
+  "apiVersion": "2024-03-03",
+  "name": "string",
+  "identity": {
+    "type": "string",
+    "userAssignedIdentities": {
+      "{customized property}": {}
+    }
+  },
+  "location": "string",
+  "properties": {
+    "description": "string",
+    "identifier": {},
+    "sharingProfile": {
+      "communityGalleryInfo": {
+        "eula": "string",
+        "publicNamePrefix": "string",
+        "publisherContact": "string",
+        "publisherUri": "string"
+      },
+      "permissions": "string"
+    },
+    "softDeletePolicy": {
+      "isSoftDeleteEnabled": "bool"
+    }
+  },
+  "tags": {
+    "{customized property}": "string"
+  }
+}

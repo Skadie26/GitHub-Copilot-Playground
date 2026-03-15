@@ -1,0 +1,14 @@
+%% 6. CI/CD Pipeline
+graph LR
+ Dev[Developer] --> Commit[Commit Push]
+ Commit --> PR[Pull Request]
+ PR --> CI[Azure DevOps Pipeline]
+ CI --> BuildFE[Build Angular]
+ CI --> BuildBE[dotnet build & test]
+ CI --> Tests[Unit & E2E Tests]
+ Tests -->|Pass| Docker[Build & Push Docker Images]
+ Docker --> Deploy[Deploy Containers]
+ Deploy --> Environment[Dev/Staging/Prod]
+ CI --> Terraform[Terraform Plan/Apply]
+ Terraform --> Infra["(Cloud Resources)"]
+ Infra --> Environment

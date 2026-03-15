@@ -1,0 +1,31 @@
+graph TD
+ subgraph Frontend [Frontend - Angular 19+]
+ A1[Components]
+ A2[Services]
+ A3[Directives]
+ A4[Pipes]
+ A5[State Management - Signals]
+ end
+
+ subgraph Backend [Backend - ASP.NET Core Web API]
+ B1[Controllers]
+ B2[Services]
+ B3[Repositories]
+ B4[Middleware]
+ end
+
+ subgraph Database [Database - SQLite]
+ D1[Tables]
+ D2[Dapper ORM]
+ end
+
+ subgraph Testing [Testing]
+ T1[Frontend Unit Tests - Karma/Jasmine]
+ T2[Frontend E2E Tests - Playwright]
+ T3[Backend Unit Tests - .NET Testing Framework]
+ end
+
+ Frontend -->|HTTP Requests| Backend
+ Backend -->|SQL Queries| Database
+ Testing --> Frontend
+ Testing --> Backend

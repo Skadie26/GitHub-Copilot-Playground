@@ -1,0 +1,102 @@
+@startuml Full-Stack Weather Application Architecture
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 10
+
+' Define colors
+skinparam package {
+    BackgroundColor<<Frontend>> #E3F2FD
+    BackgroundColor<<Backend>> #F3E5F5
+    BackgroundColor<<Data>> #E8F5E8
+    BackgroundColor<<Infrastructure>> #FCE4EC
+    BackgroundColor<<External>> #FFF3E0
+}
+
+actor User as user
+
+package "Frontend Layer" <<Frontend>> {
+    component "Angular 19+ SPA" as angular {
+        component "App Component\n(Root + Signals)" as appComp
+        component "Banner Component" as banner
+        component "Sidebar Component" as sidebar
+        component "Weather Component\n(AG-Grid)" as weather
+        component "Weather Service\n(HTTP Client)" as weatherSvc
+    }
+}
+
+package "Backend Layer" <<Backend>> {
+    component "ASP.NET Core 8.0 API" as webapi {
+        component "Weather Controller\n(v1 API)" as controller
+        component "OpenWeather Service" as openWeatherSvc
+        component "Weather Repository\n(IWeatherRepository)" as repository
+        component "Database Context\n(Dapper + SQLite)" as dbContext
+    }
+}
+
+package "Data Layer" <<Data>> {
+    database "SQLite Database\n(Weather Table)" as sqlite
+    component "Docker Volume\n(Persistent Storage)" as volume
+}
+
+package "External Services" <<External>> {
+    cloud "OpenMeteo API\n(Weather Data)" as openmeteo
+}
+
+package "Infrastructure" <<Infrastructure>> {
+    node "Docker Environment" {
+        component "Frontend Container\n(nginx:4200)" as frontendContainer
+        component "Backend Container\n(.NET:5257)" as backendContainer
+        component "Database Container\n(SQLite Server)" as dbContainer
+        component "Docker Network\n(Bridge)" as network
+    }
+    component "Terraform\n(Infrastructure as Code)" as terraform
+}
+
+package "CI/CD Pipeline" {
+    component "Azure DevOps\n(Main Pipeline)" as azurePipeline
+    component "Backend Build\n(Template)" as backendBuild
+    component "Frontend Build\n(Template)" as frontendBuild
+    component "Artifacts\n(Template)" as artifacts
+}
+
+' User interactions
+user --> frontendContainer : HTTP :4200
+user --> backendContainer : HTTP :5257/swagger
+
+' Frontend internal relationships
+appComp --> banner
+appComp --> sidebar
+appComp --> weather
+weather --> weatherSvc
+
+' API communication
+weatherSvc --> controller : HTTP REST
+controller --> openWeatherSvc
+controller --> repository
+repository --> dbContext
+dbContext --> sqlite
+
+' External API integration
+openWeatherSvc --> openmeteo : HTTP
+
+' Infrastructure relationships
+frontendContainer -.-> network
+backendContainer -.-> network
+dbContainer -.-> network
+dbContainer --> volume
+sqlite --> volume
+
+' CI/CD relationships
+azurePipeline --> backendBuild
+azurePipeline --> frontendBuild
+azurePipeline --> artifacts
+backendBuild --> backendContainer : Deploy
+frontendBuild --> frontendContainer : Deploy
+
+' Terraform management
+terraform -.-> frontendContainer : Manage
+terraform -.-> backendContainer : Manage
+terraform -.-> dbContainer : Manage
+terraform -.-> network : Manage
+
+@enduml

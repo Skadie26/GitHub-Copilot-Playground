@@ -1,0 +1,47 @@
+@startuml
+title Full-Stack Weather Application Architecture
+
+package "Frontend (Angular 19+)" {
+  [Weather Dashboard]
+  [City Selection]
+  [Navigation]
+  [API Service]
+}
+
+package "Backend (ASP.NET Core Web API .NET 8.0)" {
+  [Weather Controller]
+  [Weather Service]
+  [Dapper ORM]
+  [Swagger UI]
+}
+
+database "SQLite" as DB
+
+package "Testing" {
+  [Playwright E2E]
+  [Karma/Jasmine Unit Tests]
+  [NUnit Backend Tests]
+}
+
+package "Infrastructure" {
+  [Azure DevOps Pipeline]
+  [Terraform / ARM Templates]
+}
+
+[Weather Dashboard] --> [API Service]
+[City Selection] --> [API Service]
+[Navigation] --> [API Service]
+[API Service] --> [Weather Controller] : HTTP/HTTPS
+[Weather Controller] --> [Weather Service]
+[Weather Service] --> [Dapper ORM]
+[Dapper ORM] --> DB
+
+[Playwright E2E] ..> [Weather Dashboard]
+[Karma/Jasmine Unit Tests] ..> [Weather Dashboard]
+[NUnit Backend Tests] ..> [Weather Controller]
+
+[Azure DevOps Pipeline] --> [Weather Dashboard]
+[Azure DevOps Pipeline] --> [Weather Controller]
+[Terraform / ARM Templates] --> DB
+
+@enduml

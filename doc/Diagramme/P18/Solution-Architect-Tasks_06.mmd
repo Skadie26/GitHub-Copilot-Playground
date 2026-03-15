@@ -1,0 +1,20 @@
+sequenceDiagram
+ participant User as User
+ participant App as 🅰 App Component
+ participant Router as Router
+ participant Weather as Weather Component
+ participant Service as Weather Service
+ participant API as Backend API
+ 
+ User->>App: Load Application
+ App->>Router: Initialize Routes
+ Router->>Weather: Navigate to Weather Component
+ Weather->>Service: Request Weather Data
+ Service->>API: HTTP GET /api/weather
+ API-->>Service: Weather Response
+ Service-->>Weather: Weather Data (Signals)
+ Weather-->>User: Display Weather Grid
+ 
+ User->>Weather: Interact with Grid
+ Weather->>Weather: Update Signals
+ Weather-->>User: Reactive UI Update

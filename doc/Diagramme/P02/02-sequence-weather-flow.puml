@@ -1,0 +1,47 @@
+@startuml sequence_weather_flow
+' Sequenz: Wetterdaten live laden, speichern, DB laden
+
+actor User
+participant UI as "Angular WeatherComponent"
+participant FService as "Frontend WeatherService"
+participant API as ".NET WeatherController"
+participant Domain as "Domain WeatherService"
+participant Repo as "WeatherRepository"
+database DB as "SQLite"
+participant Ext as "OpenMeteo API"
+
+== Live Laden ==
+User -> UI: Klick "Show Live OpenMeteo Data"
+UI -> FService: getWeather()
+FService -> API: GET /api/v1/weather/live
+API -> Domain: GetLiveWeather()
+Domain -> Ext: Request forecast
+Ext --> Domain: JSON Data
+Domain --> API: DTO[]
+API --> FService: 200 OK + Data
+FService --> UI: Observable emit()
+UI -> User: Tabelle aktualisiert
+
+== Speichern ==
+User -> UI: Klick "Save Current Data"
+UI -> API: POST /api/v1/weather/save
+API -> Domain: SaveWeather()
+Domain -> Repo: persist(data)
+Repo -> DB: INSERT
+DB --> Repo: Success
+Repo --> Domain: OK
+Domain --> API: Result
+API --> UI: 200 OK (Saved)
+
+== Laden aus DB ==
+User -> UI: Klick "Show Saved Database Data"
+UI -> FService: getWeatherFromDatabase()
+FService -> API: GET /api/v1/weather/db
+API -> Repo: Query data
+Repo -> DB: SELECT
+DB --> Repo: Rows
+Repo --> API: Entities
+API --> FService: 200 OK
+FService --> UI: emit(rows)
+UI -> User: Tabelle zeigt DB Daten
+@enduml

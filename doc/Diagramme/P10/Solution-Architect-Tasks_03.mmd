@@ -1,0 +1,27 @@
+%% Angular App Component Structure
+
+flowchart TD
+ F1[AppComponent]
+ F2[WeatherDashboardComponent]
+ F3[CitySelectionComponent]
+ F4[NavigationComponent]
+ F5[WeatherService]
+ F6[SignalState]
+ F7[SharedModule]
+ F8[ErrorDisplayComponent]
+ F9[LoadingSpinnerComponent]
+
+ F1 --> F2
+ F1 --> F3
+ F1 --> F4
+ F2 --> F5
+ F3 --> F5
+ F2 --> F6
+ F3 --> F6
+ F2 --> F8
+ F2 --> F9
+ F3 --> F8
+ F3 --> F9
+ F1 --> F7
+ F7 --> F8
+ F7 --> F9

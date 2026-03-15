@@ -1,0 +1,51 @@
+<div class="weather-table-container">
+  <div class="weather-controls">
+    <div class="data-source-buttons">
+      <button
+        class="btn btn-primary"
+        [class.active]="isShowingOpenMeteoData"
+        (click)="loadOpenMeteoData()"
+        [disabled]="isLoading"
+      >
+        Show Live OpenMeteo Data
+      </button>
+      <button
+        class="btn btn-secondary"
+        [class.active]="!isShowingOpenMeteoData"
+        (click)="loadDatabaseData()"
+        [disabled]="isLoading"
+      >
+        Show Saved Database Data
+      </button>
+    </div>
+    <div class="action-buttons">
+      <button
+        class="btn btn-success"
+        (click)="fetchAndSaveData()"
+        [disabled]="isLoading || isSaving"
+      >
+        @if (isSaving) { Saving to Database... } @else { Save Current Data to
+        Database }
+      </button>
+    </div>
+  </div>
+
+  <div class="grid-wrapper">
+    @if (isLoading) {
+    <div class="loading-indicator">Loading weather data...</div>
+    } @if (error) {
+    <div class="error-message">{{ error }}</div>
+    }
+    <ag-grid-angular
+      class="ag-theme-alpine weather-grid"
+      [rowData]="weatherData"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [animateRows]="true"
+      [pagination]="false"
+      [domLayout]="'normal'"
+      [suppressHorizontalScroll]="false"
+    >
+    </ag-grid-angular>
+  </div>
+</div>

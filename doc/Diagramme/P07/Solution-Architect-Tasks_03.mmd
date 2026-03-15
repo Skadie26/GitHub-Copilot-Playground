@@ -1,0 +1,21 @@
+%% 3. Sequence: Load Forecasts for Selected City
+sequenceDiagram
+ autonumber
+ participant U as User
+ participant UI as Angular Component(s)
+ participant S as WeatherApiService
+ participant C as WeatherController
+ participant B as WeatherService
+ participant D as SQLite (Dapper)
+
+ U->>UI: Select City
+ UI->>S: getForecasts(cityId)
+ S->>C: GET /api/weather?cityId=#
+ C->>B: GetForecasts(cityId)
+ B->>D: SELECT * FROM Forecast WHERE CityId=#
+ D-->>B: Rows
+ B-->>C: Forecast DTO list
+ C-->>S: 200 OK (JSON)
+ S-->>UI: Promise resolve (data)
+ UI->>UI: Update signals / computed
+ UI-->>U: Render table

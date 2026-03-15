@@ -1,0 +1,25 @@
+@startuml SystemArchitecture
+skinparam componentStyle rectangle
+title Full-stack System Architecture
+
+package "Frontend (Angular)" {
+  [Browser / Angular UI] as Browser
+  [WeatherService (Angular)] as WS
+  [WeatherComponent (ag-grid)] as WC
+  Browser --> WS : HTTP JSON
+  WS --> WC
+}
+
+package "Backend (ASP.NET Core)" {
+  [WeatherController] as Controller
+  [OpenWeatherService] as OpenSvc
+  [WeatherRepository] as Repo
+  Controller --> OpenSvc : calls
+  Controller --> Repo : calls
+}
+
+OpenSvc --> "Open-Meteo API" : HTTP
+Repo --> "SQLite (local.db)" : SQL
+
+Browser ..> Controller : CORS / HTTP
+@enduml

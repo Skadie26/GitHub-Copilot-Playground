@@ -1,0 +1,9 @@
+flowchart TD
+		subgraph BuildAndTest
+				BackendBuild[Backend Build & Test]
+				FrontendBuild[Frontend Build & Test]
+		end
+		CreateArtifacts[Create Demo Artifacts]
+		BuildAndTest --> CreateArtifacts
+		BackendBuild --> CreateArtifacts
+		FrontendBuild --> CreateArtifacts

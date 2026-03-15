@@ -1,0 +1,28 @@
+%% 2. Container / Layer Diagram
+graph TD
+ subgraph Client
+ Angular["Angular 19+ App<br/>(Components, Signals, Services)"]
+ end
+ subgraph Server[Backend API]
+ Controller[WeatherController]
+ Service[WeatherService]
+ DataAccess[Dapper Data Access]
+ end
+ subgraph Persistence
+ SQLite["(SQLite DB)"]
+ end
+ subgraph Tooling
+ Swagger[Swagger UI]
+ Terraform[Terraform IaC]
+ Pipeline[Azure DevOps Pipeline]
+ end
+
+ Angular -->|HTTPS JSON| Controller
+ Controller --> Service
+ Service --> DataAccess
+ DataAccess --> SQLite
+ Controller --> Swagger
+ Pipeline --> Angular
+ Pipeline --> Server
+ Pipeline --> Terraform
+ Terraform --> SQLite

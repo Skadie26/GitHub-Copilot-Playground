@@ -1,0 +1,41 @@
+graph TB
+ %% User Layer
+ User[ User] --> Browser[ Browser]
+ 
+ %% Frontend Layer
+ Browser --> Angular[🅰 Angular 19+ Frontend<br/>Port: 4200]
+ 
+ %% Backend Layer
+ Angular -->|HTTP/HTTPS| API[ ASP.NET Core API<br/>Port: 5257/7102]
+ API --> Swagger[ Swagger UI<br/>/swagger]
+ 
+ %% Data Layer
+ API --> SQLite["( SQLite Database<br/>with Dapper ORM)"]
+ 
+ %% External Services
+ API -->|HTTP| OpenMeteo[ OpenMeteo API<br/>Weather Data]
+ 
+ %% Testing Layer
+ Angular -.->|E2E Tests| Playwright[ Playwright Tests]
+ Angular -.->|Unit Tests| Karma[ Karma/Jasmine]
+ API -.->|Unit Tests| NUnit[ NUnit Tests]
+ 
+ %% Infrastructure
+ subgraph Infrastructure [" Infrastructure"]
+ Azure[☁ Azure DevOps<br/>CI/CD Pipeline]
+ Terraform[ Terraform<br/>Infrastructure as Code]
+ Docker[ Docker<br/>Containerization]
+ end
+ 
+ %% Styling
+ classDef frontend fill:#e1f5fe
+ classDef backend fill:#f3e5f5
+ classDef database fill:#e8f5e8
+ classDef testing fill:#fff3e0
+ classDef infrastructure fill:#fce4ec
+ 
+ class Angular,Browser frontend
+ class API,Swagger backend
+ class SQLite,OpenMeteo database
+ class Playwright,Karma,NUnit testing
+ class Azure,Terraform,Docker infrastructure

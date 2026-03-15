@@ -1,0 +1,19 @@
+{
+  "name": "playwright-tests",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Isolated Playwright test suite for backend + frontend UI",
+  "scripts": {
+    "install:browsers": "playwright install --with-deps",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "pwdebug=console playwright test --debug",
+    "codegen": "playwright codegen http://localhost:4200"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.2",
+    "@types/node": "^24.5.2",
+    "zod": "^3.23.8"
+  }
+}

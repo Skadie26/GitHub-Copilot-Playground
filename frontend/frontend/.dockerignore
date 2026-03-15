@@ -1,0 +1,34 @@
+#################################################################
+# Docker build context ignore list for Angular frontend          #
+# NOTE: Do NOT list Dockerfile here. It must be sent in context. #
+#################################################################
+
+# Dependencies (installed inside image)
+node_modules
+
+# VCS
+.git
+.gitignore
+
+# Local build output (container will create its own dist)
+dist
+
+# Test / e2e artifacts
+e2e
+playwright
+playwright-report
+test-results
+coverage
+
+# Logs / temp
+*.log
+npm-debug.log*
+yarn-error.log*
+.tmp
+
+node_modules
+.git
+.gitignore
+Dockerfile
+.dockerignore
+dist

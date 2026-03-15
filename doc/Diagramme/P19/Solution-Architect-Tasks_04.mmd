@@ -1,0 +1,15 @@
+flowchart LR
+ User --> App[AppComponent]
+ App --> Banner[BannerComponent]
+ App --> Sidebar[SidebarComponent]
+ App --> Weather[WeatherComponent]
+ Banner --> Icons[svg-icons.ts]
+ Sidebar --> Icons
+ Weather --> Grid[backend-weather.grid.ts]
+ Weather --> WeatherSvc[WeatherService]
+ WeatherSvc --> ConfigRoot[app.config.ts]
+ WeatherSvc --> ConfigDir[config/app.config.ts]
+ WeatherSvc --> Types[Interfaces HelloResponse + Weather]
+ WeatherSvc --> API[ASP.NET Core Backend]
+ API --> DB["(SQLite DB)"]
+ API --> ExtAPI[[External Weather API]]

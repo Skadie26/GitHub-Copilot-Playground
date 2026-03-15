@@ -1,0 +1,27 @@
+sequenceDiagram
+ participant U as User
+ participant A as 🅰 Angular App
+ participant API as ASP.NET Core API
+ participant DB as SQLite DB
+ participant OM as OpenMeteo API
+ 
+ U->>A: Access Weather App
+ A->>API: GET /api/weather
+ API->>DB: Query weather data
+ DB-->>API: Return stored data
+ API-->>A: Weather data response
+ A-->>U: Display weather table
+ 
+ U->>A: Click "Load Live Data"
+ A->>API: GET /api/weather/live
+ API->>OM: Fetch current weather
+ OM-->>API: Weather data
+ API-->>A: Live weather data
+ A-->>U: Display live data
+ 
+ U->>A: Click "Save to Database"
+ A->>API: POST /api/weather
+ API->>DB: Insert weather data
+ DB-->>API: Confirm save
+ API-->>A: Success response
+ A-->>U: Show success message

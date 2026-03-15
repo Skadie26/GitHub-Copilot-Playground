@@ -1,0 +1,28 @@
+@startuml cicd_pipeline_flow
+' CI/CD Pipeline Flow
+
+start
+:Commit / Pull Request;
+:Trigger Azure Pipeline;
+fork
+  :Restore & Build Backend;
+  :Run Backend Tests;
+fork again
+  :Restore & Build Frontend;
+  :Run Frontend Unit Tests;
+end fork
+
+:Option: Playwright E2E Tests;
+
+:Package Backend (DLL / Docker);
+:ng build prod;
+:Build Docker Images;
+:Push Artifact / Container Image;
+if (Deploy approved?) then (yes)
+  :Deploy Stage;
+  :Smoke Tests / Health Checks;
+else (no)
+  :Warten auf Freigabe;
+endif
+stop
+@enduml

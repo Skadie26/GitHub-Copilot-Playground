@@ -1,0 +1,57 @@
+graph TD
+ %% Entry Point
+ Program[ Program.cs<br/>Application Entry] --> Startup[⚙ Startup Configuration]
+ 
+ %% Controllers
+ Startup --> Controllers{ Controllers}
+ Controllers --> WeatherController[ WeatherController<br/>API Endpoints]
+ 
+ %% Services & Business Logic
+ WeatherController --> Services{ Services}
+ Services --> WeatherService[ Weather Service<br/>Business Logic]
+ Services --> OpenMeteoService[ OpenMeteo Service<br/>External API]
+ 
+ %% Data Access
+ WeatherService --> DataAccess{ Data Access}
+ DataAccess --> Repository[ Repository Pattern<br/>Data Operations]
+ Repository --> Dapper[ Dapper ORM<br/>SQL Mapping]
+ Dapper --> SQLite["( SQLite Database)"]
+ 
+ %% Models & DTOs
+ subgraph " Models"
+ WeatherModel[ Weather Model]
+ DTOs[ DTOs/Requests]
+ Responses[ API Responses]
+ end
+ 
+ %% Infrastructure
+ subgraph " Infrastructure"
+ Swagger[ Swagger/OpenAPI<br/>API Documentation]
+ CORS[ CORS Configuration]
+ Logging[ Logging]
+ ErrorHandling[ Error Handling]
+ end
+ 
+ WeatherController --> WeatherModel
+ WeatherController --> DTOs
+ WeatherController --> Responses
+ 
+ Startup --> Swagger
+ Startup --> CORS
+ Startup --> Logging
+ Startup --> ErrorHandling
+ 
+ %% Styling
+ classDef entry fill:#e8f5e8
+ classDef controller fill:#e3f2fd
+ classDef service fill:#fff3e0
+ classDef data fill:#f1f8e9
+ classDef model fill:#fce4ec
+ classDef infra fill:#f3e5f5
+ 
+ class Program,Startup entry
+ class Controllers,WeatherController controller
+ class Services,WeatherService,OpenMeteoService service
+ class DataAccess,Repository,Dapper,SQLite data
+ class WeatherModel,DTOs,Responses model
+ class Swagger,CORS,Logging,ErrorHandling infra

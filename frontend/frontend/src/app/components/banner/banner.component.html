@@ -1,0 +1,76 @@
+<div class="header-section">
+  <div class="banner-container">
+    <div class="banner-content">
+      <div class="banner-icon" [class.loading]="isLoading || isSaving">
+        <svg
+          class="k-icon k-i-cloud"
+          xmlns="http://www.w3.org/2000/svg"
+          [attr.viewBox]="icons.cloud.viewBox"
+          fill="currentColor"
+        >
+          <path [attr.d]="icons.cloud.path" />
+        </svg>
+      </div>
+      <div class="banner-text">
+        <h1 class="banner-title">Weather Dashboard</h1>
+        <div class="banner-subtitle" *ngIf="isLoading">
+          <svg
+            class="k-icon k-i-loading"
+            xmlns="http://www.w3.org/2000/svg"
+            [attr.viewBox]="icons.loadingSpinner.viewBox"
+            fill="currentColor"
+          >
+            <path [attr.d]="icons.loadingSpinner.path" />
+          </svg>
+          <span>Loading weather data...</span>
+        </div>
+        <div class="banner-subtitle" *ngIf="isSaving">
+          <svg
+            class="k-icon k-i-loading"
+            xmlns="http://www.w3.org/2000/svg"
+            [attr.viewBox]="icons.loadingSpinner.viewBox"
+            fill="currentColor"
+          >
+            <path [attr.d]="icons.loadingSpinner.path" />
+          </svg>
+          <span>Saving weather data to database...</span>
+        </div>
+        <div
+          class="banner-subtitle error-state"
+          *ngIf="error && !isLoading && !isSaving"
+        >
+          <svg
+            class="k-icon k-i-warning error-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            [attr.viewBox]="icons.warning.viewBox"
+            fill="currentColor"
+          >
+            <path [attr.d]="icons.warning.path" />
+          </svg>
+          <span>{{ error }}</span>
+        </div>
+        <div
+          class="banner-subtitle success-state"
+          *ngIf="!isLoading && !error && !isSaving && dataCount > 0"
+        >
+          <svg
+            class="k-icon k-i-chart-column data-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            [attr.viewBox]="icons.chartColumn.viewBox"
+            fill="currentColor"
+          >
+            <path [attr.d]="icons.chartColumn.path" />
+          </svg>
+          <span
+            ><strong>{{ dataCount }}</strong> weather entries available</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="banner-decoration">
+      <div class="decoration-circle"></div>
+      <div class="decoration-circle"></div>
+      <div class="decoration-circle"></div>
+    </div>
+  </div>
+</div>

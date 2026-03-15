@@ -1,0 +1,30 @@
+############################################################
+# Backend Docker build context ignore list                #
+# NOTE: Do not list Dockerfile here.                      #
+############################################################
+
+# Build outputs
+bin
+obj
+TestResults
+
+# VCS
+.git
+.gitignore
+
+# Local dev / data artifacts
+local.db
+*.db
+*.sqlite
+
+# Temp / editor
+**/*.user
+**/*.swp
+**/*.tmp
+
+
+# Logs / docs
+*.log
+*.md
+
+# Keep Dockerfile & .dockerignore (do NOT ignore)

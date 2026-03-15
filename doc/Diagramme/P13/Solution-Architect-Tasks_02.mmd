@@ -1,0 +1,22 @@
+flowchart TD
+ Sidebar[Sidebar Navigation]
+ Dashboard[Weather Dashboard]
+ AGGrid[AG Grid Table]
+ WeatherService[Weather Data Service]
+ CitySelector[City Selector Component]
+ WeatherCard[Weather Card Component]
+ ErrorBanner[Error Banner Component]
+ Loader[Loader Component]
+ AppRoot[App Component Root]
+
+ AppRoot --> Sidebar
+ AppRoot --> Dashboard
+ Dashboard --> AGGrid
+ Dashboard --> CitySelector
+ Dashboard --> WeatherCard
+ Dashboard --> ErrorBanner
+ Dashboard --> Loader
+ Dashboard --> WeatherService
+ AGGrid --> WeatherService
+ CitySelector --> WeatherService
+ WeatherCard --> WeatherService

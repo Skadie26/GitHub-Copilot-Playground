@@ -1,0 +1,16 @@
+@startuml AngularComponents
+skinparam componentStyle rectangle
+title Angular Component Diagram
+
+component "app-banner" as Banner
+component "app-sidebar" as Sidebar
+component "app-weather" as WeatherComp
+component "WeatherService" as WService
+component "ag-grid" as AgGrid
+
+Banner -[hidden]-> Sidebar
+WeatherComp --> WService : uses
+WService --> "Backend API" : GET/POST
+WeatherComp --> AgGrid : renders
+
+@enduml

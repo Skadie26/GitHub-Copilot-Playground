@@ -1,0 +1,37 @@
+flowchart TD
+ subgraph Frontend [Angular 19+ App]
+ FE[Weather Dashboard]
+ Sidebar[Sidebar Navigation]
+ AGGrid[AG Grid Table]
+ FE --> Sidebar
+ FE --> AGGrid
+ end
+
+ subgraph Backend [ASP.NET Core Web API]
+ API[Weather API Controller]
+ Service[Weather Service - OpenWeatherService]
+ Repo[Dapper Repository]
+ API --> Service
+ Service --> Repo
+ end
+
+ subgraph Database [SQLite]
+ DB["(Weather Table)"]
+ end
+
+ subgraph Infrastructure [Docker & Terraform]
+ Nginx[Nginx - serves frontend]
+ Docker[Docker Compose]
+ Terraform[Terraform Scripts]
+ Nginx --> FE
+ Docker --> Backend
+ Docker --> Frontend
+ Docker --> DB
+ Terraform --> Docker
+ end
+
+ FE -- HTTP/REST --> API
+ Repo -- SQL --> DB
+ Nginx -.-> FE
+ API -- Swagger UI --> User[User]
+ FE -- Browser --> User

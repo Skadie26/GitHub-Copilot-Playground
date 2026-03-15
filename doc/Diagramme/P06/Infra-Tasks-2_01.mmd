@@ -1,0 +1,11 @@
+graph TD
+ A[Trigger] --> B[BuildAndTest Stage]
+ B --> C[Backend Job]
+ B --> D[Frontend Job]
+ 
+ C --> C1[.NET Setup → Build → Test]
+ D --> D1[Node Setup → Build → Test]
+ 
+ C1 --> E[CreateArtifacts Stage]
+ D1 --> E
+ E --> F[Download → Merge → Publish]

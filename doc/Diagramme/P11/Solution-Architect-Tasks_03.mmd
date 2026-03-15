@@ -1,0 +1,61 @@
+graph TB
+ subgraph "Angular Application"
+ AppModule[App Component<br/>Standalone]
+ Router[Angular Router]
+ 
+ subgraph "Feature Components"
+ WeatherComponent[Weather Component]
+ DashboardComponent[Dashboard Component]
+ ErrorComponent[Error Component]
+ end
+ 
+ subgraph "Shared Components"
+ HeaderComponent[Header Component]
+ FooterComponent[Footer Component]
+ LoadingComponent[Loading Component]
+ end
+ 
+ subgraph "Services"
+ WeatherService[Weather Service]
+ HttpClient[HTTP Client]
+ ErrorService[Error Service]
+ StateService[State Service]
+ end
+ 
+ subgraph "State Management"
+ Signals[Angular Signals]
+ ComputedValues[Computed Values]
+ Effects[Effects]
+ end
+ 
+ subgraph "Guards & Interceptors"
+ AuthGuard[Auth Guard]
+ ErrorInterceptor[Error Interceptor]
+ LoadingInterceptor[Loading Interceptor]
+ end
+ 
+ subgraph "Pipes & Directives"
+ CustomPipes[Custom Pipes]
+ CustomDirectives[Custom Directives]
+ end
+ end
+ 
+ AppModule --> Router
+ Router --> WeatherComponent
+ Router --> DashboardComponent
+ Router --> ErrorComponent
+ 
+ WeatherComponent --> WeatherService
+ WeatherComponent --> Signals
+ DashboardComponent --> StateService
+ 
+ WeatherService --> HttpClient
+ HttpClient --> ErrorInterceptor
+ HttpClient --> LoadingInterceptor
+ 
+ Signals --> ComputedValues
+ Signals --> Effects
+ 
+ Router --> AuthGuard
+ WeatherComponent --> CustomPipes
+ DashboardComponent --> CustomDirectives

@@ -1,0 +1,29 @@
+@startuml
+!define RECTANGLE class
+
+RECTANGLE Frontend {
+  Angular 19+ App
+  - Weather Dashboard
+  - Sidebar Navigation
+  - AG Grid Table
+}
+
+RECTANGLE Backend {
+  ASP.NET Core Web API
+  - Weather API Controller
+  - Weather Service (OpenWeatherService)
+  - Dapper Repository
+}
+
+RECTANGLE Database {
+  SQLite
+  - Weather Table
+}
+
+RECTANGLE Infrastructure {
+  Docker & Terraform
+  - Docker Compose
+  - Terraform Scripts
+  - Nginx (serves frontend)
+}
+@enduml

@@ -1,0 +1,102 @@
+graph TB
+ %% User Layer
+ User[ User]
+ 
+ %% Frontend Layer
+ subgraph "Frontend (Angular 19+)"
+ AppComp[App Component<br/>Signals & Standalone]
+ Banner[Banner Component]
+ Sidebar[Sidebar Component]
+ Weather[Weather Component<br/>AG-Grid Display]
+ WeatherSvc[Weather Service<br/>HTTP Client]
+ end
+ 
+ %% Backend Layer 
+ subgraph "Backend (ASP.NET Core 8.0)"
+ Controller[Weather Controller<br/>v1 API]
+ Service[OpenWeather Service]
+ Repository[Weather Repository<br/>IWeatherRepository]
+ DbContext[Database Context<br/>Dapper + SQLite]
+ end
+ 
+ %% Data Layer
+ subgraph "Data Layer"
+ SQLiteDB["(SQLite Database<br/>Weather Table)"]
+ Volume[Docker Volume<br/>Persistent Storage]
+ end
+ 
+ %% External Services
+ subgraph "External APIs"
+ OpenMeteo[OpenMeteo API<br/>Weather Data Source]
+ end
+ 
+ %% Infrastructure Layer
+ subgraph "Infrastructure (Docker + Terraform)"
+ DockerNetwork[Docker Network<br/>app-network]
+ BackendContainer[Backend Container<br/>Port 5257]
+ FrontendContainer[Frontend Container<br/>Port 4200] 
+ DatabaseContainer[Database Container<br/>SQLite Server]
+ TerraformConfig[Terraform<br/>Infrastructure as Code]
+ end
+ 
+ %% CI/CD Layer
+ subgraph "DevOps (Azure Pipelines)"
+ MainPipeline[Main Pipeline<br/>azure-pipelines.yml]
+ BackendTemplate[Backend Build<br/>Template]
+ FrontendTemplate[Frontend Build<br/>Template]
+ ArtifactsTemplate[Artifacts<br/>Template]
+ end
+ 
+ %% User Interactions
+ User --> FrontendContainer
+ User --> BackendContainer
+ 
+ %% Frontend Internal Flow
+ AppComp --> Banner
+ AppComp --> Sidebar 
+ AppComp --> Weather
+ Weather --> WeatherSvc
+ 
+ %% API Communication
+ WeatherSvc -->|HTTP REST| Controller
+ Controller --> Service
+ Controller --> Repository
+ Repository --> DbContext
+ DbContext --> SQLiteDB
+ 
+ %% External API Integration
+ Service -->|HTTP| OpenMeteo
+ 
+ %% Infrastructure Relationships
+ FrontendContainer -.->|Docker Network| BackendContainer
+ BackendContainer -.->|Docker Network| DatabaseContainer
+ DatabaseContainer --> Volume
+ SQLiteDB --> Volume
+ 
+ %% CI/CD Flow
+ MainPipeline --> BackendTemplate
+ MainPipeline --> FrontendTemplate
+ MainPipeline --> ArtifactsTemplate
+ BackendTemplate --> BackendContainer
+ FrontendTemplate --> FrontendContainer
+ 
+ %% Terraform Management
+ TerraformConfig -.->|Manages| DockerNetwork
+ TerraformConfig -.->|Manages| BackendContainer
+ TerraformConfig -.->|Manages| FrontendContainer
+ TerraformConfig -.->|Manages| DatabaseContainer
+ 
+ %% Styling
+ classDef frontend fill:#e1f5fe
+ classDef backend fill:#f3e5f5 
+ classDef data fill:#e8f5e8
+ classDef external fill:#fff3e0
+ classDef infrastructure fill:#fce4ec
+ classDef devops fill:#f1f8e9
+ 
+ class AppComp,Banner,Sidebar,Weather,WeatherSvc frontend
+ class Controller,Service,Repository,DbContext backend
+ class SQLiteDB,Volume data
+ class OpenMeteo external
+ class DockerNetwork,BackendContainer,FrontendContainer,DatabaseContainer,TerraformConfig infrastructure
+ class MainPipeline,BackendTemplate,FrontendTemplate,ArtifactsTemplate devops

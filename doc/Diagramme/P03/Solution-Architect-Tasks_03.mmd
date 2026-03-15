@@ -1,0 +1,125 @@
+graph TD
+ %% Bootstrap & Configuration
+ subgraph "Application Bootstrap"
+ MainTS[main.ts<br/>Application Entry Point]
+ AppConfig[app.config.ts<br/>Providers & Routes]
+ AGGridModules[AG-Grid Modules<br/>Registration]
+ end
+ 
+ %% Root Component
+ subgraph "Root Component"
+ AppComponent[app.component.ts<br/> Root Component]
+ AppTemplate[app.component.html<br/>Main Layout]
+ AppStyles[app.component.scss<br/>Global Styles]
+ end
+ 
+ %% Feature Components
+ subgraph "Feature Components"
+ BannerComp[banner.component.ts<br/> Header Navigation]
+ SidebarComp[sidebar.component.ts<br/> Side Navigation] 
+ WeatherComp[weather.component.ts<br/> Weather Display]
+ end
+ 
+ %% Weather Component Details
+ subgraph "Weather Component Architecture"
+ WeatherTemplate[weather.component.html<br/>AG-Grid Template]
+ WeatherStyles[weather.component.scss<br/>Component Styles]
+ WeatherSignals[Component Signals<br/> State Management]
+ AGGridConfig[AG-Grid Configuration<br/>Column Definitions]
+ end
+ 
+ %% Services Layer
+ subgraph "Services & Data"
+ WeatherService[weather.service.ts<br/> API Communication]
+ HttpClient[HttpClient<br/>HTTP Provider]
+ APIConfig[API_CONFIG<br/> Endpoint Configuration]
+ end
+ 
+ %% Data Models & Types
+ subgraph "Data Models"
+ WeatherModels[Weather Interfaces<br/> Type Definitions]
+ BackendResponse[BackendWeatherResponse<br/>API Response Types]
+ SimplifiedWeather[SimplifiedWeather<br/>Display Model]
+ end
+ 
+ %% Angular Modern Features
+ subgraph "Modern Angular Features"
+ Signals[Signals<br/> Reactive State]
+ Standalone[Standalone Components<br/> No NgModules]
+ ControlFlow[New Control Flow<br/>@if, @for, @switch]
+ SignalInputs["signal() Inputs<br/> Component Props"]
+ ComputedValues["computed()<br/> Derived State"]
+ end
+ 
+ %% External Dependencies
+ subgraph "External Libraries"
+ AGGrid[AG-Grid Community<br/> Data Grid]
+ AGGridCSV[CSV Export Module<br/> Export Functionality]
+ AngularCore[Angular Core 19+<br/>⚡ Framework]
+ RxJS[RxJS Observables<br/> Async Operations]
+ end
+ 
+ %% Bootstrap Flow
+ MainTS --> AGGridModules
+ MainTS --> AppConfig
+ MainTS --> AppComponent
+ 
+ %% App Component Structure
+ AppComponent --> AppTemplate
+ AppComponent --> AppStyles
+ AppTemplate --> BannerComp
+ AppTemplate --> SidebarComp
+ AppTemplate --> WeatherComp
+ 
+ %% Weather Component Architecture
+ WeatherComp --> WeatherTemplate
+ WeatherComp --> WeatherStyles
+ WeatherComp --> WeatherSignals
+ WeatherComp --> AGGridConfig
+ WeatherComp --> WeatherService
+ 
+ %% Service Dependencies
+ WeatherService --> HttpClient
+ WeatherService --> APIConfig
+ WeatherService --> WeatherModels
+ 
+ %% Data Flow
+ WeatherService -.->|HTTP Requests| BackendResponse
+ BackendResponse -.->|Transform| SimplifiedWeather
+ SimplifiedWeather -.->|Display| AGGrid
+ 
+ %% Modern Angular Integration
+ WeatherComp --> Signals
+ WeatherComp --> SignalInputs
+ WeatherComp --> ComputedValues
+ WeatherTemplate --> ControlFlow
+ AppComponent --> Standalone
+ 
+ %% External Library Integration
+ WeatherTemplate --> AGGrid
+ AGGrid --> AGGridCSV
+ WeatherService --> RxJS
+ AppComponent --> AngularCore
+ 
+ %% API Configuration
+ APIConfig -.->|BASE_URL| WeatherService
+ APIConfig -.->|ENDPOINTS| WeatherService
+ 
+ %% Component Communication
+ WeatherComp -.->|Data Events| AppComponent
+ AppComponent -.->|Props| WeatherComp
+ 
+ %% Styling
+ classDef bootstrap fill:#e3f2fd
+ classDef components fill:#f3e5f5
+ classDef services fill:#e8f5e8
+ classDef models fill:#fff3e0
+ classDef modern fill:#fce4ec
+ classDef external fill:#f1f8e9
+ 
+ class MainTS,AppConfig,AGGridModules bootstrap
+ class AppComponent,AppTemplate,AppStyles,BannerComp,SidebarComp,WeatherComp,WeatherTemplate,WeatherStyles,WeatherSignals,AGGridConfig components
+ class WeatherService,HttpClient,APIConfig services
+ class WeatherModels,BackendResponse,SimplifiedWeather models
+ class Signals,Standalone,ControlFlow,SignalInputs,ComputedValues modern
+ class AGGrid,AGGridCSV,AngularCore,RxJS external

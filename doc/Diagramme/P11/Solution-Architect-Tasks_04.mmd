@@ -1,0 +1,50 @@
+sequenceDiagram
+ participant User
+ participant Angular as Angular App
+ participant Guard as Route Guard
+ participant Service as Weather Service
+ participant HTTP as HTTP Client
+ participant API as .NET API
+ participant Controller as Weather Controller
+ participant BizService as Weather Service (BE)
+ participant Repository as Weather Repository
+ participant Dapper as Dapper ORM
+ participant DB as SQLite Database
+ 
+ User->>Angular: Navigate to Weather Page
+ Angular->>Guard: Check Route Access
+ Guard-->>Angular: Access Granted
+ 
+ Angular->>Service: Request Weather Data
+ Service->>HTTP: HTTP GET /api/weather
+ HTTP->>API: HTTPS Request
+ 
+ API->>Controller: Route to WeatherController
+ Controller->>BizService: Call GetWeatherAsync()
+ BizService->>Repository: Call GetAllWeatherAsync()
+ Repository->>Dapper: Execute SQL Query
+ Dapper->>DB: SELECT * FROM Weather
+ 
+ DB-->>Dapper: Return Data Rows
+ Dapper-->>Repository: Return Weather Entities
+ Repository-->>BizService: Return Weather List
+ BizService-->>Controller: Return Weather DTOs
+ Controller-->>API: Return HTTP 200 + JSON
+ 
+ API-->>HTTP: HTTPS Response
+ HTTP-->>Service: Observable<Weather[]>
+ Service->>Angular: Update Signal State
+ Angular->>User: Display Weather Data
+ 
+ Note over Angular, DB: Error Handling
+ alt Error Occurs
+ DB-->>Dapper: Database Error
+ Dapper-->>Repository: Exception
+ Repository-->>BizService: Repository Exception
+ BizService-->>Controller: Service Exception
+ Controller-->>API: HTTP 500 Error
+ API-->>HTTP: Error Response
+ HTTP-->>Service: HTTP Error
+ Service->>Angular: Update Error Signal
+ Angular->>User: Display Error Message
+ end

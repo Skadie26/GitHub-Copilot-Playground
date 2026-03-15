@@ -1,0 +1,32 @@
+@startuml
+package "Frontend (Angular 19+)" {
+    [Components]
+    [Services]
+    [Directives]
+    [Pipes]
+    [State Management (Signals)]
+}
+
+package "Backend (ASP.NET Core Web API)" {
+    [Controllers]
+    [Services]
+    [Repositories]
+    [Middleware]
+}
+
+package "Database (SQLite)" {
+    [Tables]
+    [Dapper ORM]
+}
+
+package "Testing" {
+    [Frontend Unit Tests (Karma/Jasmine)]
+    [Frontend E2E Tests (Playwright)]
+    [Backend Unit Tests (.NET Testing Framework)]
+}
+
+[Frontend (Angular 19+)] --> [Backend (ASP.NET Core Web API)] : HTTP Requests
+[Backend (ASP.NET Core Web API)] --> [Database (SQLite)] : SQL Queries
+[Testing] --> [Frontend (Angular 19+)]
+[Testing] --> [Backend (ASP.NET Core Web API)]
+@enduml

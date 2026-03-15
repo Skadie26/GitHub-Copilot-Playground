@@ -1,0 +1,9 @@
+﻿@startuml
+@startuml
+title azure-pipelines.yml Orchestration
+actor Dev as Developer
+participant Pipeline
+participant BackendBuild
+participant FrontendBuild
+participant CreateFinalArtifacts
+@enduml

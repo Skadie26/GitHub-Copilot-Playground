@@ -1,0 +1,13 @@
+%% 1. System Context
+graph LR
+ User((User)) --> Browser[Web Browser]
+ Browser --> Frontend[Angular SPA]
+ Frontend --> API[/ASP.NET Core Web API/]
+ API --> DB["(SQLite)"]
+ API --> ExtWeather["(External Weather Provider?)"]
+ DevOps[Azure DevOps Pipelines] --> Repo["(Git Repo)"]
+ Repo --> DevOps
+ DevOps --> Docker[Docker Images]
+ Docker --> Runtime[App Containers]
+ Runtime --> Frontend
+ Runtime --> API

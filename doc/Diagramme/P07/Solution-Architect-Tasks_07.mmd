@@ -1,0 +1,26 @@
+%% 7. Deployment / Runtime View
+graph TD
+ subgraph UserEnv
+ Browser[Browser]
+ end
+ subgraph ContainerHost[Container Host / Orchestrator]
+ FEContainer["Angular Static Assets (Nginx?)"]
+ BEContainer[ASP.NET Core API]
+ end
+ subgraph Data
+ SQLite["(SQLite DB File)"]
+ end
+ subgraph Ops
+ Registry["(Container Registry)"]
+ Pipelines[Azure DevOps Pipelines]
+ Terraform[Terraform State]
+ end
+
+ Browser --> FEContainer
+ FEContainer --> BEContainer
+ BEContainer --> SQLite
+ Pipelines --> Registry
+ Pipelines --> FEContainer
+ Pipelines --> BEContainer
+ Pipelines --> Terraform
+ Terraform --> SQLite

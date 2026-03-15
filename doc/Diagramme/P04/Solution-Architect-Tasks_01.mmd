@@ -1,0 +1,28 @@
+%% System-level architecture: Frontend <-> Backend <-> External API & Database
+flowchart LR
+ subgraph Frontend[Angular App]
+ direction TB
+ A[Browser / Angular UI] -->|HTTP JSON| B[WeatherService Angular]
+ B --> C[WeatherComponent ag-grid]
+ C -->|Emit user actions| B
+ end
+
+ subgraph Backend[ASP.NET Core API]
+ direction TB
+ D[WeatherController]
+ E[OpenWeatherService]
+ F[WeatherRepository]
+ D -->|calls| E
+ D -->|calls| F
+ E -->|HTTP JSON| G[Open-Meteo API]
+ F -->|SQL| H[SQLite local.db]
+ end
+
+ A -.->|CORS/HTTP| D
+ style Frontend fill:#f8f9fa,stroke:#333,stroke-width:1px
+ style Backend fill:#fff7e6,stroke:#333,stroke-width:1px
+
+ %% Legend
+ classDef external fill:#eef6ff,stroke:#2b6cb0
+ class G external
+ class H external

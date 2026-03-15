@@ -1,0 +1,59 @@
+@startuml
+' High-Level Architektur Übersicht
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam defaultTextAlignment center
+
+title High-Level Architektur Übersicht
+
+package "Browser" {
+  component UI as "Angular UI\n(Standalone Components + Signals)"
+}
+
+package "Frontend (Angular)" {
+  component SRV as "WeatherService\n(HTTP Adapter)"
+  component ROUTES as "Routing / App Routes"
+  component STATE as "Signals / Derived State"
+}
+
+package "Backend (.NET 8)" {
+  component CTRL as "WeatherController\n/api/v1/weather"
+  component SVC as "Domain WeatherService"
+  component REPO as "WeatherRepository\n(Dapper)"
+  database DB as "SQLite"
+}
+
+package "Externe Quelle" {
+  component OPEN as "OpenMeteo API"
+}
+
+package "Tests" {
+  component UT_FE as "Frontend Unit Tests"
+  component UT_BE as "Backend Tests"
+  component E2E as "Playwright E2E"
+}
+
+package "CI/CD (Azure Pipelines)" {
+  component PIPE as "Pipeline Jobs"
+  component ARTI as "Artifacts / Docker Images"
+  component DEPLOY as "Deployment"
+}
+
+UI --> SRV
+SRV --> CTRL
+CTRL --> SVC
+SVC --> REPO
+REPO --> DB
+SVC --> OPEN
+
+E2E --> UI
+E2E --> CTRL
+UT_FE --> UI
+UT_BE --> SVC
+
+PIPE --> ARTI
+ARTI --> DEPLOY
+DEPLOY --> UI
+DEPLOY --> CTRL
+@enduml

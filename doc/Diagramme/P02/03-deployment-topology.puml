@@ -1,0 +1,35 @@
+@startuml deployment_topology
+' Deployment / Laufzeit Topologie
+
+node "Dev Machine" {
+  node "Angular Dev Server :4200" as DevFE
+  node ".NET Kestrel :7102" as DevAPI
+  database SqlDev as "SQLite (dev)"
+}
+
+cloud "Azure Pipelines" as CI {
+  component BuildFE as "Build Frontend"
+  component BuildBE as "Build Backend"
+  component Dockerize as "Docker Build"
+  component Publish as "Push Artifacts"
+}
+
+node "Production" {
+  node Nginx as "Static / Reverse Proxy"
+  node APIProd as ".NET API Container"
+  database SqlProd as "SQLite (prod)"
+}
+
+cloud "OpenMeteo API" as External
+
+DevFE --> DevAPI
+DevAPI --> SqlDev
+
+BuildFE --> Dockerize
+BuildBE --> Dockerize
+Dockerize --> Publish
+Publish --> Nginx
+Publish --> APIProd
+APIProd --> SqlProd
+APIProd --> External
+@enduml

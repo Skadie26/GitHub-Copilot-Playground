@@ -1,0 +1,13 @@
+graph TD
+ subgraph AngularApp [Angular Application]
+ Components[Components]
+ Services[Services]
+ Directives[Directives]
+ Pipes[Pipes]
+ StateManagement["State Management (Signals)"]
+ end
+
+ Components -->|Uses| Services
+ Components -->|Includes| Directives
+ Components -->|Applies| Pipes
+ Components -->|Manages| StateManagement

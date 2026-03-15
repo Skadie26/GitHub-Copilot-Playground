@@ -1,0 +1,46 @@
+architecture-beta
+ %% Groups
+ group client(internet)[Client Browser]
+ group frontend(cloud)[Angular Frontend Dev Server 4200]
+ group backend(server)[NET 8 Web API HTTPS 7102]
+ group data(database)[Data Layer]
+ group testing(cloud)[Testing]
+ group orchestration(cloud)[Dev Orchestration]
+
+ %% Services
+ service browser(internet)[Browser] in client
+
+ service angularApp(cloud)[Angular SPA] in frontend
+
+ service webApi(server)[API] in backend
+ service swagger(cloud)[Swagger UI] in backend
+ service dapper(server)[Dapper ORM] in backend
+
+ service sqlite(database)[SQLite DB] in data
+ service dbFile(disk)[SQLite File] in data
+
+ service playwright(server)[Playwright E2E] in testing
+ service unitTests(server)[Karma Jasmine Unit Tests] in testing
+ service backendTests(server)[NET Unit Tests] in testing
+
+ service startScript(server)[Start Script] in orchestration
+
+ %% Core flow
+ browser:R -- L:angularApp
+ angularApp:R -- L:webApi
+ webApi:R -- L:dapper
+ dapper:R -- L:sqlite
+ sqlite:B -- T:dbFile
+
+ %% API tooling
+ swagger:T -- B:webApi
+
+ %% Orchestration
+ startScript:R -- L:angularApp
+ startScript:B -- T:webApi
+
+ %% Testing interactions
+ playwright:R -- L:angularApp
+ playwright:B -- T:webApi
+ unitTests:R -- L:angularApp
+ backendTests:R -- L:webApi

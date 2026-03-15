@@ -1,0 +1,47 @@
+graph TB
+ subgraph "API Layer"
+ WeatherController[WeatherController]
+ Swagger[Swagger/OpenAPI]
+ Middleware[Middleware Pipeline]
+ end
+ 
+ subgraph "Business Layer"
+ IWeatherService[IWeatherService]
+ WeatherService[WeatherService]
+ Validation[Data Validation]
+ end
+ 
+ subgraph "Data Access Layer"
+ IWeatherRepository[IWeatherRepository]
+ WeatherRepository[WeatherRepository]
+ DatabaseContext[DatabaseContext]
+ end
+ 
+ subgraph "Infrastructure"
+ Dapper[Dapper ORM]
+ SQLite["(SQLite Database)"]
+ Configuration[Configuration]
+ Logging[Logging]
+ end
+ 
+ subgraph "Models"
+ WeatherModels[Weather Models]
+ DTOs[Data Transfer Objects]
+ Entities[Database Entities]
+ end
+ 
+ WeatherController --> IWeatherService
+ IWeatherService --> WeatherService
+ WeatherService --> IWeatherRepository
+ WeatherService --> Validation
+ IWeatherRepository --> WeatherRepository
+ WeatherRepository --> DatabaseContext
+ WeatherRepository --> Dapper
+ DatabaseContext --> SQLite
+ 
+ WeatherController --> DTOs
+ WeatherService --> WeatherModels
+ WeatherRepository --> Entities
+ 
+ Middleware --> Logging
+ WeatherService --> Configuration

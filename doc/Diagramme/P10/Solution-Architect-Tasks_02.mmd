@@ -1,0 +1,47 @@
+%% filepath: d:\repos\copilot-playground\doc\Tasks\Solution-Architect-Tasks.md
+%% Full-stack architecture overview
+
+flowchart TD
+ subgraph Frontend [Angular 19+]
+ A1[Weather Dashboard]
+ A2[City Selection]
+ A3[Navigation]
+ A4[API Service]
+ end
+
+ subgraph Backend [ASP.NET Core Web API .NET 8.0]
+ B1[Weather Controller]
+ B2[Dapper ORM]
+ B3[Swagger UI]
+ B4[Weather Service]
+ end
+
+ subgraph Database [SQLite]
+ D1["(Weather Data)"]
+ end
+
+ subgraph Testing
+ T1[Playwright E2E]
+ T2[Karma/Jasmine Unit Tests]
+ T3[NUnit Backend Tests]
+ end
+
+ subgraph Infrastructure
+ I1[Azure DevOps Pipeline]
+ I2[Terraform / ARM Templates]
+ end
+
+ %% Connections
+ A1 --> A4
+ A2 --> A4
+ A3 --> A4
+ A4 -->|HTTP/HTTPS| B1
+ B1 --> B4
+ B4 --> B2
+ B2 --> D1
+ T1 -.-> A1
+ T2 -.-> A1
+ T3 -.-> B1
+ I1 --> A1
+ I1 --> B1
+ I2 --> D1
