@@ -91,8 +91,3 @@ This project includes **GitHub Copilot-optimized commit message settings** to he
 - 💾 **[Database Tasks](./doc/Tasks/Database-Tasks.md)** - Schema design, SQL queries, and optimization
 - ⚙️ **[Infrastructure Tasks](./doc/Tasks/Infra-Tasks.md)** - YAML pipelines, Terraform, and DevOps automation
 - 🏗️ **[Solution Architect Tasks](./doc/Tasks/Solution-Architect-Tasks.md)** - System design, diagrams, documentation, and architecture patterns
-
-**PS:**
-
-- 🔌 **Model Context Protocol (MCP)** - It's currently in **preview mode** and not yet available in the MR. MCP will eventually allow GitHub Copilot to directly interact with databases, APIs, and external services for more contextual assistance.
-- 🔍 **Pull Request Review** - GitHub Copilot's automated pull request review feature is also currently in **preview mode** and not yet available in the MR. This feature will provide AI-powered code review suggestions, security analysis, and best practice recommendations directly within pull requests.
